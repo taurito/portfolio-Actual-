@@ -1,0 +1,37 @@
+<div class="containar_global">
+  
+  <div class="container_sidebar">
+    <div class="logo">
+      <img src="assets/img/logo1.png" alt="">
+    </div>
+    <hr style="color: azure;">
+    <ul  class="nav-link active">
+      <li class="nav-item" routerLink="/admin/general">
+        <a>
+          <i class="bi bi-dropbox"></i>
+          General
+        </a>
+      </li>
+      <li class="nav-item" routerLink="/admin/trabajos">
+        <a>
+          <i class="bi bi-gear"></i>
+          Portafolio
+        </a>
+      </li>
+      <li class="nav-item" routerLink="/admin/usuarios">
+        <a >
+          <i class="bi bi-people"></i>
+          Usuarios
+        </a>
+      </li>
+      <li routerLink="/home" class="cerrarSesion"><button type="button" class="btn btn-outline-danger" data-bs-toggle="modal">
+        Cerrar sesión
+      </button>
+      </li>
+    </ul>
+  </div>
+  <div class="container_body_admin">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>

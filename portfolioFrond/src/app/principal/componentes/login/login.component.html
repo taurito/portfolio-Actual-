@@ -1,0 +1,42 @@
+<div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Iniciar sesion</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cerrar()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="loginForm">
+          <p class="text-danger">{{loginError}}</p>
+          <div class="mb-3">
+            <label for="inputEmail" class="form-label">Email</label>
+            <input formControlName="email" type="text" class="form-control" id="inputEmail" aria-describedby="emailHelp">
+              <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                class="text-danger">
+
+                <div *ngIf="email.errors?.['required']">
+                  El usuario es requerido.
+                </div>
+
+              </div>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+            <input formControlName="password" type="password" class="form-control" id="exampleInputPassword1">
+            <div *ngIf="password.invalid && (password.dirty || password.touched)"
+                class="text-danger">
+
+                <div *ngIf="password.errors?.['required']">
+                  El password es requerido.
+                </div>
+
+            </div>
+          </div>
+          <div class="btns_confirm">
+            <button type="submit" (click)="login()" class="btn btn-primary">Iniciar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

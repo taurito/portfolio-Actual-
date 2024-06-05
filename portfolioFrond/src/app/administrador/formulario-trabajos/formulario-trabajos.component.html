@@ -1,0 +1,47 @@
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Registro</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cerrarFormulario()"></button>
+      </div>
+      <div class="modal-body">
+        <form class="item" #f="ngForm" (ngSubmit)="f.form.valid && onGuardarWork()">
+          <div class="form-floating mb-3">
+            <input type="text" name="titulo"  id="floatingInput" placeholder="Titulo" [(ngModel)]="tituloInput" required>
+            <label for="floatingInput">Titulo</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="file" (change)="capturarFile($event)" class="form-control" id="inputGroupFile02" >
+          </div>
+          <div *ngIf="previsualizacion">
+            <img width="200px" [src]="previsualizacion" class="img-thumbnail">
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" name="referencia" class="form-control" id="floatingInput" placeholder="Referencia" [(ngModel)]="RefInput" required>
+            <label for="floatingInput">Referencia</label>
+          </div>
+          <div class="form-floating">
+            <textarea name="descripcion" class="form-control" placeholder="descripcion" id="floatingTextarea" [(ngModel)]="DesTextAreA" required></textarea>
+            <label for="floatingTextarea">Descripcion</label>
+          </div>
+          <hr>
+          <div class="contBott">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="margin-right: 20px;" (click)="cerrarFormulario()">Cerrar</button>
+            <br>
+            <button type="submit" class="btn btn-primary" >Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+

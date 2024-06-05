@@ -1,0 +1,27 @@
+<div class="globa-container">
+  <div style="text-align: center">
+    <button *ngIf="userLoginOn" class="btn btn-info btn-circle btn-xl" style="cursor: pointer"type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <i class="bi bi-plus"></i>
+    </button>
+  </div>
+
+  <div class="flex-container">
+    <div class="card" style="width: 18rem" *ngFor="let trabajo of trabajos">
+      <img src="{{getImageUrl(trabajo.image)}}" class="card-img-top" alt="{{trabajo.titulo}}" />
+      <div class="card-body">
+        <h5 class="card-title">{{ trabajo.titulo }}</h5>
+        <p class="card-text">
+          {{ trabajo.descripcion }}
+        </p>
+      </div>
+      <div class="card-footer">
+        <div class="container">
+          <button *ngIf="userLoginOn" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >Editar</button>
+          <button *ngIf="userLoginOn" type="button" class="btn btn-outline-danger">Eliminar</button>
+          <button *ngIf="!userLoginOn" type="button" class="btn btn-outline-primary">Ver mas</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-formulario-trabajos></app-formulario-trabajos>

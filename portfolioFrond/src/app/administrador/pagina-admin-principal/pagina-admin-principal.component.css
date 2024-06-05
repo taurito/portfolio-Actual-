@@ -1,0 +1,42 @@
+.containar_global{
+  display: flex;
+}
+.container_sidebar{
+  display: flex;
+  background-color: #212529;
+  box-sizing: border-box;
+  flex-direction: column;
+  width: 16%;
+  padding: 1rem;
+  color: #fff;
+  position: fixed;
+  height: 100%;
+}
+
+.container_sidebar a {
+  padding: 8px 8px 8px 16px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #f2f2f2;
+  display: block;
+  cursor: pointer;
+}
+
+/* Cambiar el color del enlace activo */
+.container_sidebar a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.container_body_admin{
+  width: 100%;
+  margin-left: 280px;
+}
+
+.cerrarSesion{
+  padding-top: 190%;
+  text-align: center;
+}
+ul {
+  list-style: none;
+}

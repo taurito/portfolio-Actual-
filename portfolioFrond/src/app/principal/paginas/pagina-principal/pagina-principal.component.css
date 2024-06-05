@@ -1,0 +1,23 @@
+.containerPrincipal{
+  background-image: url(src/assets/img/fondo-home.jpg);
+  margin: auto;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  position: relative;
+}
+.header{
+  width: 100px;
+  height: 100px;
+}
+
+.footer{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
