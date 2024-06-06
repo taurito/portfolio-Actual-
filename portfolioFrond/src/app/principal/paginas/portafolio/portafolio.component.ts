@@ -31,7 +31,6 @@ export class PortafolioComponent implements OnInit{
   getTrabajos(){
     this.trabajoService.listarTrabajos().subscribe((data) =>{
       this.trabajos = data;
-      console.log(this.trabajos);
     });
   }
 

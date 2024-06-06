@@ -6,23 +6,23 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cerrarFormulario()"></button>
       </div>
       <div class="modal-body">
-        <form class="item" #f="ngForm" (ngSubmit)="f.form.valid && onGuardarWork()">
+        <form class="item" [formGroup]="form" (ngSubmit)=" onGuardarWork()">
           <div class="form-floating mb-3">
-            <input type="text" name="titulo"  id="floatingInput" placeholder="Titulo" [(ngModel)]="tituloInput" required>
+            <input type="text" id="titulo" class="form-control" formControlName="titulo" placeholder="Titulo"  required>
             <label for="floatingInput">Titulo</label>
           </div>
           <div class="form-floating mb-3">
-            <input type="file" (change)="capturarFile($event)" class="form-control" id="inputGroupFile02" >
+            <input type="file" (change)="capturarFile($event)" class="form-control" id="imagen" >
           </div>
           <div *ngIf="previsualizacion">
             <img width="200px" [src]="previsualizacion" class="img-thumbnail">
           </div>
           <div class="form-floating mb-3">
-            <input type="text" name="referencia" class="form-control" id="floatingInput" placeholder="Referencia" [(ngModel)]="RefInput" required>
+            <input type="text" class="form-control" id="referencia" placeholder="Referencia" formControlName="referencia" required>
             <label for="floatingInput">Referencia</label>
           </div>
           <div class="form-floating">
-            <textarea name="descripcion" class="form-control" placeholder="descripcion" id="floatingTextarea" [(ngModel)]="DesTextAreA" required></textarea>
+            <textarea class="form-control" placeholder="descripcion" id="descripcion" formControlName="descripcion"  required></textarea>
             <label for="floatingTextarea">Descripcion</label>
           </div>
           <hr>

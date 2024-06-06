@@ -54,7 +54,7 @@ public class CardWorkController {
         card.setReferencia(referencia);
 
         cardWorkService.crearCard(card, image);
-        return new ResponseEntity<>(new Mensaje("creado exitosamente"), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje("trabajo creado exitosamente"), HttpStatus.OK);
     }
     /*@PutMapping("/update/{id}")
     public ResponseEntity<?> updateCardWork(@PathVariable("id") int id, @RequestBody CardWorkDto cardWorkDto){
