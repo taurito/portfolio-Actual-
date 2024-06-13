@@ -1,7 +1,7 @@
 import { Trabajo } from 'src/app/models/trabajo';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TrabajoService } from 'src/app/servicios/trabajo.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -15,18 +15,21 @@ export class FormularioTrabajosComponent implements OnInit{
 
   public previsualizacion: string;
   public filePrevi:File;
+  public trabajo:Trabajo;
 
-  constructor(private trabajoService:TrabajoService, private router:Router, private sanitizer:DomSanitizer, private fb:FormBuilder){
+
+  constructor(private trabajoService:TrabajoService, private router:Router, private sanitizer:DomSanitizer, private fb:FormBuilder, private route: ActivatedRoute){
     this.form = this.fb.group({
       titulo:[''],
       image:[''],
       referencia:[''],
       descripcion:['']
     });
+
   }
 
   ngOnInit(): void {
-
+    this.cargarTrabajoFormulario();
   }
 
   capturarFile(event:any){
@@ -41,27 +44,38 @@ export class FormularioTrabajosComponent implements OnInit{
     })
   }
 
-  cerrarFormulario(){}
+  cerrarFormulario(){
+    this.form = this.fb.group({
+      titulo:[''],
+      image:[''],
+      referencia:[''],
+      descripcion:['']
+    });
+    this.previsualizacion = '';
+  }
 
   onGuardarWork(){
-    const formData: FormData = new FormData();
-    formData.append('titulo', this.form.get('titulo')!.value);
-    formData.append('image', this.form.get('image')!.value);
-    formData.append('referencia', this.form.get('referencia')!.value);
-    formData.append('descripcion', this.form.get('descripcion')!.value);
-    console.log(formData)
+    if(this.trabajo.idCardWock == 0)
 
-    this.trabajoService.agregarTrabajo(formData).subscribe(
-      (response) =>{
-        console.log('Trabajo creado exitosamente', response);
-      },
-      (error) => {
-        console.error('Error al crear el trabajo', error);
-      }
-    );
-    formData.forEach((value, key) => {
-      console.log(key, value);
-    });
+    console.log("guardar" + this.trabajo)
+  else{
+    console.log("editar" + this.trabajo.idCardWock);
+    this.trabajo.idCardWock = 0;
+  }
+    // const formData: FormData = new FormData();
+    // formData.append('titulo', this.form.get('titulo')!.value);
+    // formData.append('image', this.form.get('image')!.value);
+    // formData.append('referencia', this.form.get('referencia')!.value);
+    // formData.append('descripcion', this.form.get('descripcion')!.value);
+
+    // this.trabajoService.agregarTrabajo(formData).subscribe({
+    //   next: (response) => {
+    //     console.log('Trabajo creado exitosamente', response);
+    //   },
+    //   error: (error) => {
+    //     console.error('Error al crear el trabajo', error);
+    //   },
+    // });
   }
 
   extraerBase64 = async ($event:any) => new Promise((resolve, reject) => {
@@ -83,6 +97,27 @@ export class FormularioTrabajosComponent implements OnInit{
     } catch (e) {
       return console.log(e);
     }
-  })
+  });
+
+  cargarTrabajoFormulario(){
+    this.trabajoService.trabajoObs.subscribe({
+      next: (trabajoCargado) => {
+        this.trabajo = trabajoCargado;
+          if(this.trabajo){
+            this.form = this.fb.group({
+              titulo:this.trabajo.titulo,
+              image:this.trabajo.image,
+              referencia:this.trabajo.referencia,
+              descripcion:this.trabajo.descripcion
+            });
+            this.previsualizacion = this.trabajoService.getImage(this.trabajo.image);
+
+          }
+      },
+      error: (error) => {
+        console.error('Error al editar el trabajo', error);
+      },
+    });
+  }
 
 }

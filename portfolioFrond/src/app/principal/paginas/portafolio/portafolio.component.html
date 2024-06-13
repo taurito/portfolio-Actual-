@@ -16,7 +16,7 @@
       </div>
       <div class="card-footer">
         <div class="container">
-          <button *ngIf="userLoginOn" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >Editar</button>
+          <button *ngIf="userLoginOn" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="editarTrabajo(trabajo)">Editar</button>
           <button *ngIf="userLoginOn" type="button" class="btn btn-outline-danger">Eliminar</button>
           <button *ngIf="!userLoginOn" type="button" class="btn btn-outline-primary">Ver mas</button>
         </div>

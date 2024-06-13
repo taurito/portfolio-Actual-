@@ -35,7 +35,11 @@ export class PortafolioComponent implements OnInit{
   }
 
   getImageUrl(imagen: String){
-    return `http://localhost:8080/card/imagen/${imagen}`;
+    return this.trabajoService.getImage(imagen);
+  }
+
+  editarTrabajo(trabajo:Trabajo){
+    this.trabajoService.cargarTrabajo(trabajo);
   }
 
 }
