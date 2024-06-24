@@ -8,116 +8,147 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-formulario-trabajos',
   templateUrl: './formulario-trabajos.component.html',
-  styleUrls: ['./formulario-trabajos.component.css']
+  styleUrls: ['./formulario-trabajos.component.css'],
 })
-export class FormularioTrabajosComponent implements OnInit{
+export class FormularioTrabajosComponent implements OnInit {
   form: FormGroup;
 
   public previsualizacion: string;
-  public filePrevi:File;
-  public trabajo:Trabajo;
+  public filePrevi: File;
+  public trabajo: Trabajo;
 
-
-  constructor(private trabajoService:TrabajoService, private router:Router, private sanitizer:DomSanitizer, private fb:FormBuilder, private route: ActivatedRoute){
+  constructor(
+    private trabajoService: TrabajoService,
+    private router: Router,
+    private sanitizer: DomSanitizer,
+    private fb: FormBuilder,
+    private route: ActivatedRoute
+  ) {
     this.form = this.fb.group({
-      titulo:[''],
-      image:[''],
-      referencia:[''],
-      descripcion:['']
+      titulo: [''],
+      image: [''],
+      referencia: [''],
+      descripcion: [''],
     });
-
   }
 
   ngOnInit(): void {
     this.cargarTrabajoFormulario();
   }
 
-  capturarFile(event:any){
+  capturarFile(event: any) {
     this.filePrevi = event.target.files[0];
     console.log(this.filePrevi);
-      this.form.patchValue({
-        image:this.filePrevi
-      });
+    this.form.patchValue({
+      image: this.filePrevi,
+    });
 
-    this.extraerBase64(this.filePrevi).then((imagenDeco: any) =>{
+    this.extraerBase64(this.filePrevi).then((imagenDeco: any) => {
       this.previsualizacion = imagenDeco.base;
-    })
+    });
   }
 
-  cerrarFormulario(){
+  cerrarFormulario() {
     this.form = this.fb.group({
-      titulo:[''],
-      image:[''],
-      referencia:[''],
-      descripcion:['']
+      titulo: [''],
+      image: [''],
+      referencia: [''],
+      descripcion: [''],
     });
     this.previsualizacion = '';
   }
 
-  onGuardarWork(){
-    if(this.trabajo.idCardWock == 0)
+  onGuardarWork() {
+    if (this.trabajo.idCardWock == 0) {
+      const formData: FormData = new FormData();
+      formData.append('titulo', this.form.get('titulo')!.value);
+      formData.append('image', this.form.get('image')!.value);
+      formData.append('referencia', this.form.get('referencia')!.value);
+      formData.append('descripcion', this.form.get('descripcion')!.value);
 
-    console.log("guardar" + this.trabajo)
-  else{
-    console.log("editar" + this.trabajo.idCardWock);
-    this.trabajo.idCardWock = 0;
-  }
-    // const formData: FormData = new FormData();
-    // formData.append('titulo', this.form.get('titulo')!.value);
-    // formData.append('image', this.form.get('image')!.value);
-    // formData.append('referencia', this.form.get('referencia')!.value);
-    // formData.append('descripcion', this.form.get('descripcion')!.value);
+      formData.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
 
-    // this.trabajoService.agregarTrabajo(formData).subscribe({
-    //   next: (response) => {
-    //     console.log('Trabajo creado exitosamente', response);
-    //   },
-    //   error: (error) => {
-    //     console.error('Error al crear el trabajo', error);
-    //   },
-    // });
-  }
+      // this.trabajoService.agregarTrabajo(formData).subscribe({
+      //   next: (response) => {
+      //     console.log('Trabajo creado exitosamente', response);
+      //   },
+      //   error: (error) => {
+      //     console.error('Error al crear el trabajo', error);
+      //   },
+      // });
+      console.log('guardar');
+    } else {
+      console.log('editar' + this.trabajo.idCardWock);
 
-  extraerBase64 = async ($event:any) => new Promise((resolve, reject) => {
-    try {
-      const unsafeImg = window.URL.createObjectURL($event);
-      const image = this.sanitizer.bypassSecurityTrustUrl(unsafeImg);
-      const reader = new FileReader();
-      reader.readAsDataURL($event);
-      reader.onload = () => {
-        resolve({
-          base: reader.result
-        });
-      };
-      reader.onerror = error => {
-        resolve({
-          base: null
-        });
-      };
-    } catch (e) {
-      return console.log(e);
+
+      const formDataUpd: FormData = new FormData();
+      formDataUpd.append('titulo', this.form.get('titulo')!.value);
+      formDataUpd.append('image', this.form.get('image')!.value);
+      formDataUpd.append('referencia', this.form.get('referencia')!.value);
+      formDataUpd.append('descripcion', this.form.get('descripcion')!.value);
+
+      formDataUpd.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
+
+      console.log("esto es el id que se esta enviando:" + this.trabajo.idCardWock);
+
+      // this.trabajoService.actualizarTrabajo(this.trabajo.idCardWock, formDataUpd).subscribe({
+      //   next: (response) => {
+      //     console.log('Trabajo creado exitosamente', response);
+      //   },
+      //   error: (error) => {
+      //     console.error('Error al crear el trabajo', error);
+      //   },
+      // });
     }
-  });
+  }
 
-  cargarTrabajoFormulario(){
+  extraerBase64 = async ($event: any) =>
+    new Promise((resolve, reject) => {
+      try {
+        const unsafeImg = window.URL.createObjectURL($event);
+        const image = this.sanitizer.bypassSecurityTrustUrl(unsafeImg);
+        const reader = new FileReader();
+        reader.readAsDataURL($event);
+        reader.onload = () => {
+          resolve({
+            base: reader.result,
+          });
+        };
+        reader.onerror = (error) => {
+          resolve({
+            base: null,
+          });
+        };
+      } catch (e) {
+        return console.log(e);
+      }
+    });
+
+  cargarTrabajoFormulario() {
     this.trabajoService.trabajoObs.subscribe({
       next: (trabajoCargado) => {
         this.trabajo = trabajoCargado;
-          if(this.trabajo){
-            this.form = this.fb.group({
-              titulo:this.trabajo.titulo,
-              image:this.trabajo.image,
-              referencia:this.trabajo.referencia,
-              descripcion:this.trabajo.descripcion
-            });
-            this.previsualizacion = this.trabajoService.getImage(this.trabajo.image);
-
-          }
+        if (this.trabajo.idCardWock != 0) {
+          this.form = this.fb.group({
+            titulo: this.trabajo.titulo,
+            image: this.trabajo.image,
+            referencia: this.trabajo.referencia,
+            descripcion: this.trabajo.descripcion,
+          });
+          this.previsualizacion = this.trabajoService.getImage(
+            this.trabajo.image
+          );
+          console.log(this.trabajo);
+          console.log(this.previsualizacion);
+        }
       },
       error: (error) => {
         console.error('Error al editar el trabajo', error);
       },
     });
   }
-
 }

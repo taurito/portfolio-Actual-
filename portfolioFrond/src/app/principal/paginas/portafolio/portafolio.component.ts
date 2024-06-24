@@ -13,9 +13,19 @@ import { TrabajoService } from 'src/app/servicios/trabajo.service';
 export class PortafolioComponent implements OnInit{
   trabajos:Trabajo[];
   userLoginOn:boolean=false;
+  trabajoBacio:Trabajo = {
+    idCardWock : 0,
+    titulo : '',
+    image : '',
+    referencia :'',
+    descripcion : ''
+  }
+
 
   constructor(private trabajoService:TrabajoService, private router: Router,
-    private route: ActivatedRoute, private loginService:LoginService){}
+    private route: ActivatedRoute, private loginService:LoginService){
+
+    }
   ngOnInit(): void {
 
     this.getTrabajos();
@@ -34,12 +44,16 @@ export class PortafolioComponent implements OnInit{
     });
   }
 
+  nuevoTrabajo(){
+    this.trabajoService.cargarTrabajo(this.trabajoBacio);
+  }
+
   getImageUrl(imagen: String){
     return this.trabajoService.getImage(imagen);
   }
 
   editarTrabajo(trabajo:Trabajo){
-    this.trabajoService.cargarTrabajo(trabajo);
+      this.trabajoService.cargarTrabajo(trabajo);
   }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +36,16 @@ public class CardWorkService {
             String filename = file.getOriginalFilename();
             String filePath = UPLOAD_DIR + filename;
             Files.copy(file.getInputStream(), Paths.get(filePath));
+            card.setImage(filename);
+        }
+        cardWorkRepository.save(card);
+    }
+
+    public void updateCard(CardWork card, MultipartFile file) throws IOException {
+        if (file != null && !file.isEmpty()) {
+            String filename = file.getOriginalFilename();
+            String filePath = UPLOAD_DIR + filename;
+            Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
             card.setImage(filename);
         }
         cardWorkRepository.save(card);

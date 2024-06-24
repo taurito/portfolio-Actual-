@@ -39,7 +39,7 @@ export class TrabajoService {
     return this.trabajoSubject.asObservable();
   }
 
-  public actualizarTrabajo(id:number, trabajo:Trabajo): Observable<any>{
+  public actualizarTrabajo(id:number, trabajo:FormData): Observable<any>{
       return this.httpClient.put<any>(this.urlBase + `update/${id}`, trabajo);
   }
 

@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/card")
@@ -56,31 +57,28 @@ public class CardWorkController {
         cardWorkService.crearCard(card, image);
         return new ResponseEntity<>(new Mensaje("trabajo creado exitosamente"), HttpStatus.OK);
     }
-    /*@PutMapping("/update/{id}")
-    public ResponseEntity<?> updateCardWork(@PathVariable("id") int id, @RequestBody CardWorkDto cardWorkDto){
-        if(!cardWorkService.existById(id)){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateCardWork(@PathVariable("id") int id,
+                                            @RequestPart("titulo") String titulo,
+                                            @RequestPart("image") MultipartFile image,
+                                            @RequestPart("descripcion") String descripcion,
+                                            @RequestPart("referencia") String referencia)throws IOException{
+
+        Optional<CardWork> existingCardOpt = cardWorkService.getCardById(id);
+
+        if(!existingCardOpt.isPresent()){
             return new ResponseEntity<>(new Mensaje("Este card no existe"), HttpStatus.NOT_FOUND);
-        }
-        if(StringUtils.isBlank(cardWorkDto.getTitulo())){
-            return new ResponseEntity<>(new Mensaje("El titulo es obligatorio"), HttpStatus.BAD_REQUEST);
-        }
-        if(StringUtils.isBlank(cardWorkDto.getDescripcion())){
-            return new ResponseEntity<>(new Mensaje("La descripcion es obligatorio"), HttpStatus.BAD_REQUEST);
-        }
-        if(StringUtils.isBlank(cardWorkDto.getReferencia())){
-            return new ResponseEntity<>(new Mensaje("La referencia es obligatorio"), HttpStatus.BAD_REQUEST);
         }
 
         CardWork card = cardWorkService.getCardById(id).get();
 
-        card.setTitulo(cardWorkDto.getTitulo());
-        card.setImage(cardWorkDto.getImage());
-        card.setDescripcion(cardWorkDto.getDescripcion());
-        card.setReferencia(cardWorkDto.getReferencia());
+        card.setTitulo(titulo);
+        card.setDescripcion(descripcion);
+        card.setReferencia(referencia);
 
-        cardWorkService.crearCard(card);
+        cardWorkService.updateCard(card, image);
         return new ResponseEntity<>(new Mensaje("Card actualizado exitosamente"), HttpStatus.OK);
-    }*/
+    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteCardWork (@PathVariable("id") int id){
