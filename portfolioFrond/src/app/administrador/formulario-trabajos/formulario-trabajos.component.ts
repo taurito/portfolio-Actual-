@@ -16,6 +16,8 @@ export class FormularioTrabajosComponent implements OnInit {
   public previsualizacion: string;
   public filePrevi: File;
   public trabajo: Trabajo;
+  public imagenFile:File;
+
 
   constructor(
     private trabajoService: TrabajoService,
@@ -70,6 +72,9 @@ export class FormularioTrabajosComponent implements OnInit {
         console.log(`${key}: ${value}`);
       });
 
+      const file = this.form.get('image')!.value;
+      console.log(file.name);
+
       // this.trabajoService.agregarTrabajo(formData).subscribe({
       //   next: (response) => {
       //     console.log('Trabajo creado exitosamente', response);
@@ -80,8 +85,7 @@ export class FormularioTrabajosComponent implements OnInit {
       // });
       console.log('guardar');
     } else {
-      console.log('editar' + this.trabajo.idCardWock);
-
+      console.log('id del cardWork a editar' + this.trabajo.idCardWock);
 
       const formDataUpd: FormData = new FormData();
       formDataUpd.append('titulo', this.form.get('titulo')!.value);
@@ -93,7 +97,15 @@ export class FormularioTrabajosComponent implements OnInit {
         console.log(`${key}: ${value}`);
       });
 
-      console.log("esto es el id que se esta enviando:" + this.trabajo.idCardWock);
+      const file = this.form.get('image')!.value;
+      console.log(file.name);
+
+      if(this.trabajo.image == file.name){
+        console.log("guardar el trabajo sin modificar la imagen");
+      }else{
+        console.log("guardar el trabajo con la imagen modificada")
+      }
+
 
       // this.trabajoService.actualizarTrabajo(this.trabajo.idCardWock, formDataUpd).subscribe({
       //   next: (response) => {
@@ -133,9 +145,23 @@ export class FormularioTrabajosComponent implements OnInit {
       next: (trabajoCargado) => {
         this.trabajo = trabajoCargado;
         if (this.trabajo.idCardWock != 0) {
+          const file = this.trabajo.image;
+          this.trabajoService.getFile(file).subscribe({
+            next: (resFile) =>{
+              this.imagenFile = new File([resFile], file, {type: resFile.type, lastModified: Date.now()});
+              this.form.patchValue({
+                image: this.imagenFile,
+              });
+              console.log(this.imagenFile);
+            },
+            error: (error) => {
+              console.error('imagen no fue convertido', error);
+            },
+
+          });
           this.form = this.fb.group({
             titulo: this.trabajo.titulo,
-            image: this.trabajo.image,
+            image: [''],
             referencia: this.trabajo.referencia,
             descripcion: this.trabajo.descripcion,
           });
@@ -143,7 +169,6 @@ export class FormularioTrabajosComponent implements OnInit {
             this.trabajo.image
           );
           console.log(this.trabajo);
-          console.log(this.previsualizacion);
         }
       },
       error: (error) => {
@@ -151,4 +176,17 @@ export class FormularioTrabajosComponent implements OnInit {
       },
     });
   }
+
+  // extraerFile(file:string){
+  //   this.trabajoService.getFile(file).subscribe({
+  //     next: (resFile) =>{
+  //       return this.imagenFile = new File([resFile], file, {type: resFile.type, lastModified: Date.now()});
+  //     },
+  //     error: (error) => {
+  //       console.error('imagen no fue convertido', error);
+  //     },
+
+  //   });
+
+  // }
 }

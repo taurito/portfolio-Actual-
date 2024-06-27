@@ -52,4 +52,9 @@ export class TrabajoService {
 
   }
 
+  public getFile(imagen:String):Observable<Blob>{
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.httpClient.get(`${this.urlBase}imagen/${imagen}`, { headers, responseType: 'blob' });
+  }
+
 }

@@ -1,10 +1,9 @@
 package com.app.portfolioBack.controller;
 
-import com.app.portfolioBack.dto.CardWorkDto;
+
 import com.app.portfolioBack.dto.Mensaje;
 import com.app.portfolioBack.entity.CardWork;
 import com.app.portfolioBack.service.CardWorkService;
-import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +16,7 @@ import org.springframework.core.io.Resource;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,8 +97,11 @@ public class CardWorkController {
             Resource resource = new UrlResource(file.toUri());
 
             if (resource.exists() || resource.isReadable()) {
+                String contentType = Files.probeContentType(file);
+
                 return ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_TYPE, "image/jpg", "image/png", "inline; filename=\"" + resource.getFilename() + "\"")
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                        .header(HttpHeaders.CONTENT_TYPE, contentType != null ? contentType : "application/octet-stream")
                         .body(resource);
             } else {
                 throw new RuntimeException("Could not read the file!");

@@ -1,7 +1,7 @@
 export interface Trabajo{
   idCardWock: number;
   titulo:String;
-  image:String;
+  image:string;
   referencia:String;
   descripcion:String;
 }
