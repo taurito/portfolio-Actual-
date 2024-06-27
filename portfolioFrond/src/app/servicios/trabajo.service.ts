@@ -24,7 +24,7 @@ export class TrabajoService {
   }
 
   public agregarTrabajo(trabajo:FormData): Observable<any>{
-      return this.httpClient.post<any>(`${this.urlBase}create`, trabajo,  {
+      return this.httpClient.post<any>(this.urlBase + 'create', trabajo,  {
         headers: new HttpHeaders({
           'enctype': 'multipart/form-data'
         })

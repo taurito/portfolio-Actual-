@@ -42,17 +42,36 @@ public class CardWorkService {
     }
 
     public void updateCard(CardWork card, MultipartFile file) throws IOException {
-        if (file != null && !file.isEmpty()) {
+        if (file != null && !file.isEmpty()){
             String filename = file.getOriginalFilename();
-            String filePath = UPLOAD_DIR + filename;
-            Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-            card.setImage(filename);
+            if(card.getImage().equals(filename)){
+                cardWorkRepository.save(card);
+            }else{
+                String filePath = UPLOAD_DIR + filename;
+                Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+                card.setImage(filename);
+                cardWorkRepository.save(card);
+            }
         }
-        cardWorkRepository.save(card);
+//        if (file != null && !file.isEmpty()) {
+//            String filename = file.getOriginalFilename();
+//            String filePath = UPLOAD_DIR + filename;
+//            Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+//            card.setImage(filename);
+//        }
+//        cardWorkRepository.save(card);
     }
 
-    public void deleteCard(int id){
-        cardWorkRepository.deleteById(id);
+    public void deleteCard(int id)throws IOException{
+        Optional<CardWork> card = cardWorkRepository.findById(id);
+
+        if(card.isPresent()){
+            CardWork trabajo = card.get();
+            String imagePath = UPLOAD_DIR + trabajo.getImage();
+            Files.deleteIfExists(Paths.get(imagePath));
+            cardWorkRepository.deleteById(id);
+        }
+
     }
 
     public boolean existById(int id){

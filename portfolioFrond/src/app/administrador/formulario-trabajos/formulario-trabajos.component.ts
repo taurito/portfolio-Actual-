@@ -61,60 +61,56 @@ export class FormularioTrabajosComponent implements OnInit {
   }
 
   onGuardarWork() {
-    if (this.trabajo.idCardWock == 0) {
-      const formData: FormData = new FormData();
+    const formData: FormData = new FormData();
       formData.append('titulo', this.form.get('titulo')!.value);
       formData.append('image', this.form.get('image')!.value);
       formData.append('referencia', this.form.get('referencia')!.value);
       formData.append('descripcion', this.form.get('descripcion')!.value);
 
+
+      const file = this.form.get('image')!.value;
+
+
+    if (this.trabajo.idCardWock == 0) {
+      console.log("guardar trabajo");
+
       formData.forEach((value, key) => {
         console.log(`${key}: ${value}`);
       });
-
-      const file = this.form.get('image')!.value;
       console.log(file.name);
 
-      // this.trabajoService.agregarTrabajo(formData).subscribe({
-      //   next: (response) => {
-      //     console.log('Trabajo creado exitosamente', response);
-      //   },
-      //   error: (error) => {
-      //     console.error('Error al crear el trabajo', error);
-      //   },
-      // });
-      console.log('guardar');
-    } else {
-      console.log('id del cardWork a editar' + this.trabajo.idCardWock);
-
-      const formDataUpd: FormData = new FormData();
-      formDataUpd.append('titulo', this.form.get('titulo')!.value);
-      formDataUpd.append('image', this.form.get('image')!.value);
-      formDataUpd.append('referencia', this.form.get('referencia')!.value);
-      formDataUpd.append('descripcion', this.form.get('descripcion')!.value);
-
-      formDataUpd.forEach((value, key) => {
-        console.log(`${key}: ${value}`);
+      this.trabajoService.agregarTrabajo(formData).subscribe({
+        next: (response) => {
+          console.log('Trabajo creado exitosamente', response);
+        },
+        error: (error) => {
+          console.error('Error al crear el trabajo', error);
+        },
       });
 
-      const file = this.form.get('image')!.value;
+    } else {
+
+      console.log("actulizar trabajo");
+      formData.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
       console.log(file.name);
 
-      if(this.trabajo.image == file.name){
-        console.log("guardar el trabajo sin modificar la imagen");
-      }else{
-        console.log("guardar el trabajo con la imagen modificada")
-      }
+      // if(this.trabajo.image == file.name){
+      //   console.log("guardar el trabajo sin modificar la imagen");
+      // }else{
+      //   console.log("guardar el trabajo con la imagen modificada")
+      // }
 
 
-      // this.trabajoService.actualizarTrabajo(this.trabajo.idCardWock, formDataUpd).subscribe({
-      //   next: (response) => {
-      //     console.log('Trabajo creado exitosamente', response);
-      //   },
-      //   error: (error) => {
-      //     console.error('Error al crear el trabajo', error);
-      //   },
-      // });
+      this.trabajoService.actualizarTrabajo(this.trabajo.idCardWock, formData).subscribe({
+        next: (response) => {
+          console.log('Trabajo creado exitosamente', response);
+        },
+        error: (error) => {
+          console.error('Error al crear el trabajo', error);
+        },
+      });
     }
   }
 

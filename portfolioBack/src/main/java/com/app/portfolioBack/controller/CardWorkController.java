@@ -81,7 +81,7 @@ public class CardWorkController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteCardWork (@PathVariable("id") int id){
+    public ResponseEntity<?> deleteCardWork (@PathVariable("id") int id) throws IOException {
         if(!cardWorkService.existById(id)){
             return new ResponseEntity<>(new Mensaje("Estes card no existe"), HttpStatus.NOT_FOUND);
         }

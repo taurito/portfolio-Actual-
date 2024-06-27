@@ -56,4 +56,16 @@ export class PortafolioComponent implements OnInit{
       this.trabajoService.cargarTrabajo(trabajo);
   }
 
+  eliminar(id:number){
+    console.log(id)
+    this.trabajoService.eliminarTrabajo(id).subscribe({
+      next: (response) => {
+        console.log('Trabajo eliminado exitosamente', response);
+      },
+      error: (error) => {
+        console.error('Error eliminar el trabajo', error);
+      },
+    });
+  }
+
 }
