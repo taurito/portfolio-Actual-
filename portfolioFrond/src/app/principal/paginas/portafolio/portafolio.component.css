@@ -1,6 +1,10 @@
 .card-footer{
+  height: 100%;
   background-color: #fff;
   border-top: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .container{
@@ -46,3 +50,52 @@
   margin-bottom:30px;
   margin-left: 4px;
 }
+
+.tecnologias {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.tecnologias i {
+  font-size: 24px;
+  text-align: center;
+}
+
+.tecnologias i h1{
+  font-size: 12px;
+  text-align: center;
+}
+.botonesOpcion{
+  display: flex;
+  justify-content: space-between;
+}
+
+.botonesOpcion button{
+  margin: 5px;
+  width: 95px;
+}
+
+.icon-green {
+  color: rgb(110, 207, 110);
+}
+.icon-red {
+  color: red;
+}
+.icon-purple {
+  color: purple;
+}
+.icon-teal {
+  color: rgb(14, 138, 209);
+}
+.icon-yellow {
+  color: rgb(243, 219, 7);
+}
+.icon-black {
+  color: black;
+}
+.icon-blue {
+  color: rgb(29, 96, 172);
+}
+

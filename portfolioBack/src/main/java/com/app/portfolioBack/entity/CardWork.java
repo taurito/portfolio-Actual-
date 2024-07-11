@@ -1,10 +1,13 @@
 package com.app.portfolioBack.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -22,10 +25,15 @@ public class CardWork {
     private String descripcion;
     private String referencia;
 
-    public CardWork(String titulo, String imagen, String descripcion, String referencia) {
+    @OneToMany(mappedBy = "trabajo", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Tecnologia> tecnologias;
+
+    public CardWork(String titulo, String imagen, String descripcion, String referencia, List<Tecnologia> tecnologias) {
         this.titulo = titulo;
         this.image = imagen;
         this.descripcion = descripcion;
         this.referencia = referencia;
+        this.tecnologias = tecnologias;
     }
 }
