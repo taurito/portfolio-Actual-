@@ -1,4 +1,4 @@
 export interface Tecnologia {
-  idTecnologia: number;
+  idTecnologia?: number;
   nombre: string;
 }

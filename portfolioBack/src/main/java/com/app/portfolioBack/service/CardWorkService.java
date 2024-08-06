@@ -1,7 +1,9 @@
 package com.app.portfolioBack.service;
 
 import com.app.portfolioBack.entity.CardWork;
+import com.app.portfolioBack.entity.Tecnologia;
 import com.app.portfolioBack.repository.CardWorkRepository;
+import com.app.portfolioBack.repository.TecnologiaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -20,6 +23,8 @@ public class CardWorkService {
 
     @Autowired
     CardWorkRepository cardWorkRepository;
+    @Autowired
+    TecnologiaRepository tecnologiaRepository;
 
     private static final String UPLOAD_DIR = "c:/SAUL_JM/imagenApi/";
 
@@ -38,7 +43,11 @@ public class CardWorkService {
             Files.copy(file.getInputStream(), Paths.get(filePath));
             card.setImage(filename);
         }
+        for (Tecnologia tecnologia: card.getTecnologias()){
+            tecnologia.setTrabajo(card);
+        }
         cardWorkRepository.save(card);
+
     }
 
     public void updateCard(CardWork card, MultipartFile file) throws IOException {
@@ -53,13 +62,6 @@ public class CardWorkService {
                 cardWorkRepository.save(card);
             }
         }
-//        if (file != null && !file.isEmpty()) {
-//            String filename = file.getOriginalFilename();
-//            String filePath = UPLOAD_DIR + filename;
-//            Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-//            card.setImage(filename);
-//        }
-//        cardWorkRepository.save(card);
     }
 
     public void deleteCard(int id)throws IOException{

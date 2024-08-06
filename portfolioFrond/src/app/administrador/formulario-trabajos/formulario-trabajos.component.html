@@ -25,6 +25,17 @@
             <textarea class="form-control" placeholder="descripcion" id="descripcion" formControlName="descripcion"  required></textarea>
             <label for="floatingTextarea">Descripcion</label>
           </div>
+          <br>
+          <label for="">Tecnologias:</label>
+
+          <div class="listCheck">
+            <div formGroupName="tecnologias">
+              <div *ngFor="let tecnologia of tecnologiasDisponibles; let i = index">
+                <input type="checkbox" [formControlName]="tecnologia.nombre">
+                <label>{{ tecnologia.nombre }}</label>
+              </div>
+            </div>
+          </div>
           <hr>
           <div class="contBott">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="margin-right: 20px;" (click)="cerrarFormulario()">Cerrar</button>

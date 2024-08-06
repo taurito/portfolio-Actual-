@@ -3,6 +3,7 @@ package com.app.portfolioBack.controller;
 
 import com.app.portfolioBack.dto.Mensaje;
 import com.app.portfolioBack.entity.CardWork;
+import com.app.portfolioBack.entity.Tecnologia;
 import com.app.portfolioBack.service.CardWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +30,8 @@ public class CardWorkController {
     CardWorkService cardWorkService;
 
     private static final String UPLOAD_DIR = "c:/SAUL_JM/imagenApi/";
+
+
     @GetMapping("/lista")
     public ResponseEntity<List<CardWork>> listCardWork(){
         List<CardWork> cards = cardWorkService.listCardWorks();
@@ -47,12 +51,17 @@ public class CardWorkController {
     public ResponseEntity<?> createCardWork(@RequestParam("titulo") String titulo,
                                             @RequestParam("image")MultipartFile image,
                                             @RequestParam("descripcion") String descripcion,
-                                            @RequestParam("referencia")String referencia) throws IOException {
+                                            @RequestParam("referencia")String referencia,
+                                            @RequestPart("tecnologias") List<Tecnologia> tecnologiasJson) throws IOException {
+
+
 
         CardWork card = new CardWork();
         card.setTitulo(titulo);
         card.setDescripcion(descripcion);
         card.setReferencia(referencia);
+        card.setTecnologias(tecnologiasJson);
+        System.out.println(card);
 
         cardWorkService.crearCard(card, image);
         return new ResponseEntity<>(new Mensaje("trabajo creado exitosamente"), HttpStatus.OK);

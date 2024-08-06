@@ -1,6 +1,8 @@
 package com.app.portfolioBack.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,9 +22,12 @@ public class Tecnologia {
     private String nombre;
 
     @ManyToOne
-    @JoinColumn(name = "trabajo_id")
+    @JoinColumn(name = "trabajo_id", nullable = false)
     @JsonBackReference
     private CardWork trabajo;
 
-
+    public Tecnologia(String nombre, CardWork trabajo) {
+        this.nombre = nombre;
+        this.trabajo = trabajo;
+    }
 }

@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TrabajoService } from 'src/app/servicios/trabajo.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Tecnologia } from 'src/app/models/tecnologia';
 
 @Component({
   selector: 'app-formulario-trabajos',
@@ -11,12 +12,22 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./formulario-trabajos.component.css'],
 })
 export class FormularioTrabajosComponent implements OnInit {
+
   form: FormGroup;
 
   public previsualizacion: string;
   public filePrevi: File;
   public trabajo: Trabajo;
   public imagenFile:File;
+
+  tecnologiasDisponibles: Tecnologia[] = [{nombre:'spring-boot'},
+                                {nombre:'angular'},
+                                {nombre:'bootstrap'},
+                                {nombre:'java'},
+                                {nombre:'javascript'},
+                                {nombre:'react'},
+                                {nombre:'mysql'},
+                                {nombre:'postgresql'}];
 
 
   constructor(
@@ -25,17 +36,25 @@ export class FormularioTrabajosComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private fb: FormBuilder,
     private route: ActivatedRoute
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.form = this.fb.group({
       titulo: [''],
       image: [''],
       referencia: [''],
       descripcion: [''],
+      tecnologias: this.fb.group(this.createTecnologiaControls())
     });
+    this.cargarTrabajoFormulario();
   }
 
-  ngOnInit(): void {
-    this.cargarTrabajoFormulario();
+  createTecnologiaControls() {
+    const controls: { [key: string]: FormControl } = {};
+    this.tecnologiasDisponibles.forEach(tecnologia => {
+      controls[tecnologia.nombre] = new FormControl(false);
+    });
+    return controls;
   }
 
   capturarFile(event: any) {
@@ -67,6 +86,21 @@ export class FormularioTrabajosComponent implements OnInit {
       formData.append('referencia', this.form.get('referencia')!.value);
       formData.append('descripcion', this.form.get('descripcion')!.value);
 
+      const tecnologiasControl = this.form.get('tecnologias');
+      if (tecnologiasControl) {
+        const selectedTecnologias = this.tecnologiasDisponibles.filter(tecnologia => tecnologiasControl
+          .get(tecnologia.nombre)?.value)
+          .map(tecnologia => ({nombre: tecnologia.nombre}));
+          formData.append('tecnologias', new Blob([JSON.stringify(selectedTecnologias)], { type: 'application/json' }));
+      }
+
+      formData.forEach((value, key) => {
+        if (value instanceof Blob) {
+          value.text().then((text) => console.log(key + ': ' + text));
+        } else {
+          console.log(key + ': ' + value);
+        }
+      });
 
       const file = this.form.get('image')!.value;
 
@@ -77,7 +111,6 @@ export class FormularioTrabajosComponent implements OnInit {
       formData.forEach((value, key) => {
         console.log(`${key}: ${value}`);
       });
-      console.log(file.name);
 
       this.trabajoService.agregarTrabajo(formData).subscribe({
         next: (response) => {
@@ -90,18 +123,11 @@ export class FormularioTrabajosComponent implements OnInit {
 
     } else {
 
-      console.log("actulizar trabajo");
+      console.log("actualizar trabajo");
       formData.forEach((value, key) => {
         console.log(`${key}: ${value}`);
       });
       console.log(file.name);
-
-      // if(this.trabajo.image == file.name){
-      //   console.log("guardar el trabajo sin modificar la imagen");
-      // }else{
-      //   console.log("guardar el trabajo con la imagen modificada")
-      // }
-
 
       this.trabajoService.actualizarTrabajo(this.trabajo.idCardWock, formData).subscribe({
         next: (response) => {
@@ -173,16 +199,4 @@ export class FormularioTrabajosComponent implements OnInit {
     });
   }
 
-  // extraerFile(file:string){
-  //   this.trabajoService.getFile(file).subscribe({
-  //     next: (resFile) =>{
-  //       return this.imagenFile = new File([resFile], file, {type: resFile.type, lastModified: Date.now()});
-  //     },
-  //     error: (error) => {
-  //       console.error('imagen no fue convertido', error);
-  //     },
-
-  //   });
-
-  // }
 }

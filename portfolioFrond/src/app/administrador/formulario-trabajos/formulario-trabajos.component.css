@@ -7,3 +7,8 @@
   justify-content: flex-end;
 
 }
+.listCheck{
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
