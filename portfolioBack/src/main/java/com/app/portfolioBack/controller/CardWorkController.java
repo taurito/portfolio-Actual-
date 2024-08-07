@@ -4,6 +4,7 @@ package com.app.portfolioBack.controller;
 import com.app.portfolioBack.dto.Mensaje;
 import com.app.portfolioBack.entity.CardWork;
 import com.app.portfolioBack.entity.Tecnologia;
+import com.app.portfolioBack.repository.TecnologiaRepository;
 import com.app.portfolioBack.service.CardWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
@@ -28,6 +29,7 @@ import java.util.Optional;
 public class CardWorkController {
     @Autowired
     CardWorkService cardWorkService;
+
 
     private static final String UPLOAD_DIR = "c:/SAUL_JM/imagenApi/";
 
@@ -86,14 +88,7 @@ public class CardWorkController {
         card.setDescripcion(descripcion);
         card.setReferencia(referencia);
 
-        //limpiamos las tecnologias existentes
-        card.getTecnologias().clear();
-        for(Tecnologia tecnologia: tecnologiasJson){
-            tecnologia.setTrabajo(card);
-            card.getTecnologias().add(tecnologia);
-        }
-
-        cardWorkService.updateCard(card, image);
+        cardWorkService.updateCard(card, tecnologiasJson, image);
         return new ResponseEntity<>(new Mensaje("Card actualizado exitosamente"), HttpStatus.OK);
     }
 

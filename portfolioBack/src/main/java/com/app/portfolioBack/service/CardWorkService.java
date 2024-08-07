@@ -50,17 +50,39 @@ public class CardWorkService {
 
     }
 
-
-    public void updateCard(CardWork card, MultipartFile file) throws IOException {
+    @Transactional
+    public void updateCard(CardWork card, List<Tecnologia> tecnologias, MultipartFile file) throws IOException {
         if (file != null && !file.isEmpty()){
             String filename = file.getOriginalFilename();
             if(card.getImage().equals(filename)){
+                // Eliminar tecnologías antiguas
+                tecnologiaRepository.deleteAll(card.getTecnologias());
+
+                // Limpiar la lista de tecnologías
+                card.getTecnologias().clear();
+
+                // Asignar nuevas tecnologías
+                for (Tecnologia tecnologia : tecnologias) {
+                    tecnologia.setTrabajo(card);
+                    card.getTecnologias().add(tecnologia);
+                }
                 cardWorkRepository.save(card);
 
             }else{
                 String filePath = UPLOAD_DIR + filename;
                 Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
                 card.setImage(filename);
+                // Eliminar tecnologías antiguas
+                tecnologiaRepository.deleteAll(card.getTecnologias());
+
+                // Limpiar la lista de tecnologías
+                card.getTecnologias().clear();
+
+                // Asignar nuevas tecnologías
+                for (Tecnologia tecnologia : tecnologias) {
+                    tecnologia.setTrabajo(card);
+                    card.getTecnologias().add(tecnologia);
+                }
                 cardWorkRepository.save(card);
             }
         }
