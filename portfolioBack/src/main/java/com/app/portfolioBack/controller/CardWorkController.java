@@ -71,7 +71,8 @@ public class CardWorkController {
                                             @RequestPart("titulo") String titulo,
                                             @RequestPart("image") MultipartFile image,
                                             @RequestPart("descripcion") String descripcion,
-                                            @RequestPart("referencia") String referencia)throws IOException{
+                                            @RequestPart("referencia") String referencia,
+                                            @RequestPart("tecnologias") List<Tecnologia> tecnologiasJson)throws IOException{
 
         Optional<CardWork> existingCardOpt = cardWorkService.getCardById(id);
 
@@ -84,6 +85,13 @@ public class CardWorkController {
         card.setTitulo(titulo);
         card.setDescripcion(descripcion);
         card.setReferencia(referencia);
+
+        //limpiamos las tecnologias existentes
+        card.getTecnologias().clear();
+        for(Tecnologia tecnologia: tecnologiasJson){
+            tecnologia.setTrabajo(card);
+            card.getTecnologias().add(tecnologia);
+        }
 
         cardWorkService.updateCard(card, image);
         return new ResponseEntity<>(new Mensaje("Card actualizado exitosamente"), HttpStatus.OK);

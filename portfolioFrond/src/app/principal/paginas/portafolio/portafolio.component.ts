@@ -20,6 +20,7 @@ export class PortafolioComponent implements OnInit {
     image: '',
     referencia: '',
     descripcion: '',
+    tecnologias:[]
   };
 
   constructor(

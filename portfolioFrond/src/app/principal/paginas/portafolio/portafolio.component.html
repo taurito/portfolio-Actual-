@@ -19,7 +19,7 @@
             <i *ngFor="let tecnologia of trabajo.tecnologias" [class]="getIconClass(tecnologia.nombre)" [ngClass]="getIconColorClass(tecnologia.nombre)"><h1>{{tecnologia.nombre}}</h1></i>
           </div>
           <div class="botonesOpcion">
-            <button *ngIf="userLoginOn" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="editarTrabajo(trabajo)">Editar</button>
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="editarTrabajo(trabajo)">Editar</button>
             <button *ngIf="userLoginOn" type="button" class="btn btn-outline-danger" (click)="eliminar(trabajo.idCardWock)">Eliminar</button>
             <button *ngIf="!userLoginOn" type="button" class="btn btn-outline-primary">Ver mas</button>
           </div>

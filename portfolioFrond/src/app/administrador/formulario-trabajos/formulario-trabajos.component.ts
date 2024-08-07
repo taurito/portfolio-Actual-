@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TrabajoService } from 'src/app/servicios/trabajo.service';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Tecnologia } from 'src/app/models/tecnologia';
 
 @Component({
@@ -70,11 +70,12 @@ export class FormularioTrabajosComponent implements OnInit {
   }
 
   cerrarFormulario() {
-    this.form = this.fb.group({
+    this.form.patchValue({
       titulo: [''],
       image: [''],
       referencia: [''],
       descripcion: [''],
+      tecnologias:[]
     });
     this.previsualizacion = '';
   }
@@ -94,6 +95,7 @@ export class FormularioTrabajosComponent implements OnInit {
           formData.append('tecnologias', new Blob([JSON.stringify(selectedTecnologias)], { type: 'application/json' }));
       }
 
+      console.log(this.trabajo.idCardWock);
       formData.forEach((value, key) => {
         if (value instanceof Blob) {
           value.text().then((text) => console.log(key + ': ' + text));
@@ -181,14 +183,23 @@ export class FormularioTrabajosComponent implements OnInit {
             },
 
           });
-          this.form = this.fb.group({
+          this.form.patchValue({
             titulo: this.trabajo.titulo,
             image: [''],
             referencia: this.trabajo.referencia,
             descripcion: this.trabajo.descripcion,
           });
+
+          const tecnologiasFormGroup = this.form.get('tecnologias') as FormGroup;
+          this.tecnologiasDisponibles.forEach(tecnologia => {
+          const isChecked = this.trabajo.tecnologias.some(t => t.nombre === tecnologia.nombre);
+          if (tecnologiasFormGroup.controls[tecnologia.nombre]) {
+            tecnologiasFormGroup.controls[tecnologia.nombre].setValue(isChecked);
+          }
+          });
+
           this.previsualizacion = this.trabajoService.getImage(
-            this.trabajo.image
+          this.trabajo.image
           );
           console.log(this.trabajo);
         }

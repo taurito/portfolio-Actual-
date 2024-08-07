@@ -50,11 +50,13 @@ public class CardWorkService {
 
     }
 
+
     public void updateCard(CardWork card, MultipartFile file) throws IOException {
         if (file != null && !file.isEmpty()){
             String filename = file.getOriginalFilename();
             if(card.getImage().equals(filename)){
                 cardWorkRepository.save(card);
+
             }else{
                 String filePath = UPLOAD_DIR + filename;
                 Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);

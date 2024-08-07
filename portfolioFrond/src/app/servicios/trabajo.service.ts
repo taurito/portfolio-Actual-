@@ -9,7 +9,7 @@ import { Trabajo } from '../models/trabajo';
 export class TrabajoService {
   private urlBase = "http://localhost:8080/card/";
 
-  private trabajoSubject:BehaviorSubject<Trabajo> = new BehaviorSubject<Trabajo>({idCardWock:0, titulo:'', image:'', descripcion:'', referencia:''});
+  private trabajoSubject:BehaviorSubject<Trabajo> = new BehaviorSubject<Trabajo>({idCardWock:0, titulo:'', image:'', descripcion:'', referencia:'', tecnologias:[]});
 
   constructor(private httpClient:HttpClient) { }
 

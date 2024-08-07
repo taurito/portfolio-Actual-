@@ -6,5 +6,5 @@ export interface Trabajo{
   image:string;
   referencia:String;
   descripcion:String;
-  tecnologias?: Tecnologia[];
+  tecnologias: Tecnologia[];
 }
