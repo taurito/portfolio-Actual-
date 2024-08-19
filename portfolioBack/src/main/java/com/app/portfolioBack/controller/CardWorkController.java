@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,7 +32,7 @@ public class CardWorkController {
     CardWorkService cardWorkService;
 
 
-    private static final String UPLOAD_DIR = "c:/SAUL_JM/imagenApi/";
+    private static final String UPLOAD_DIR = new File("src/main/resources/static/images/").getAbsolutePath();
 
 
     @GetMapping("/lista")

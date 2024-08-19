@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
@@ -26,7 +28,7 @@ public class CardWorkService {
     @Autowired
     TecnologiaRepository tecnologiaRepository;
 
-    private static final String UPLOAD_DIR = "c:/SAUL_JM/imagenApi/";
+    private static final String UPLOAD_DIR = new File("src/main/resources/static/images/").getAbsolutePath(); //c:/SAUL_JM/imagenApi/
 
     public List<CardWork> listCardWorks (){
         return cardWorkRepository.findAll();
@@ -39,8 +41,8 @@ public class CardWorkService {
     public void crearCard (CardWork card, MultipartFile file) throws IOException {
         if(!file.isEmpty()){
             String filename = file.getOriginalFilename();
-            String filePath = UPLOAD_DIR + filename;
-            Files.copy(file.getInputStream(), Paths.get(filePath));
+            Path filePath = Paths.get(UPLOAD_DIR, filename);
+            Files.copy(file.getInputStream(), filePath);
             card.setImage(filename);
         }
         for (Tecnologia tecnologia: card.getTecnologias()){
@@ -69,8 +71,8 @@ public class CardWorkService {
                 cardWorkRepository.save(card);
 
             }else{
-                String filePath = UPLOAD_DIR + filename;
-                Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+                Path filePath = Paths.get(UPLOAD_DIR, filename);
+                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
                 card.setImage(filename);
                 // Eliminar tecnologías antiguas
                 tecnologiaRepository.deleteAll(card.getTecnologias());
