@@ -55,7 +55,8 @@ public class CardWorkController {
                                             @RequestParam("image")MultipartFile image,
                                             @RequestParam("descripcion") String descripcion,
                                             @RequestParam("referencia")String referencia,
-                                            @RequestPart("tecnologias") List<Tecnologia> tecnologiasJson) throws IOException {
+                                            @RequestPart("tecnologias") List<Tecnologia> tecnologiasJson,
+                                            @RequestParam("urlGit")String urlGit) throws IOException {
 
 
 
@@ -64,6 +65,7 @@ public class CardWorkController {
         card.setDescripcion(descripcion);
         card.setReferencia(referencia);
         card.setTecnologias(tecnologiasJson);
+        card.setUrlGit(urlGit);
         System.out.println(card);
 
         cardWorkService.crearCard(card, image);
@@ -75,7 +77,8 @@ public class CardWorkController {
                                             @RequestPart("image") MultipartFile image,
                                             @RequestPart("descripcion") String descripcion,
                                             @RequestPart("referencia") String referencia,
-                                            @RequestPart("tecnologias") List<Tecnologia> tecnologiasJson)throws IOException{
+                                            @RequestPart("tecnologias") List<Tecnologia> tecnologiasJson,
+                                            @RequestPart("urlGit") String urlGit)throws IOException{
 
         Optional<CardWork> existingCardOpt = cardWorkService.getCardById(id);
 
@@ -88,6 +91,7 @@ public class CardWorkController {
         card.setTitulo(titulo);
         card.setDescripcion(descripcion);
         card.setReferencia(referencia);
+        card.setUrlGit(urlGit);
 
         cardWorkService.updateCard(card, tecnologiasJson, image);
         return new ResponseEntity<>(new Mensaje("Card actualizado exitosamente"), HttpStatus.OK);

@@ -24,16 +24,18 @@ public class CardWork {
     private String image;
     private String descripcion;
     private String referencia;
+    private String urlGit;
 
     @OneToMany(mappedBy = "trabajo", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Tecnologia> tecnologias;
 
-    public CardWork(String titulo, String imagen, String descripcion, String referencia, List<Tecnologia> tecnologias) {
+    public CardWork(String titulo, String imagen, String descripcion, String referencia, List<Tecnologia> tecnologias, String urlGit) {
         this.titulo = titulo;
         this.image = imagen;
         this.descripcion = descripcion;
         this.referencia = referencia;
         this.tecnologias = tecnologias;
+        this.urlGit = urlGit;
     }
 }

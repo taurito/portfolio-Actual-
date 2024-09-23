@@ -7,4 +7,5 @@ export interface Trabajo{
   referencia:String;
   descripcion:String;
   tecnologias: Tecnologia[];
+  urlGit:String;
 }

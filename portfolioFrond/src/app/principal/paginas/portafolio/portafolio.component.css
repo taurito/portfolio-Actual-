@@ -69,12 +69,18 @@
 }
 .botonesOpcion{
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: space-evenly;
+
 }
 
 .botonesOpcion button{
   margin: 5px;
-  width: 95px;
+}
+.botonesOpcion a i{
+  font-size: 30px;
+  cursor: pointer;
+  color: black;
 }
 
 .icon-green {

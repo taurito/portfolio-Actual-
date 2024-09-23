@@ -19,4 +19,5 @@ public class CardWorkDto {
     private String descripcion;
     @NotBlank
     private String referencia;
+    private String urlGit;
 }

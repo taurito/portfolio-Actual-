@@ -44,7 +44,8 @@ export class FormularioTrabajosComponent implements OnInit {
       image: [''],
       referencia: [''],
       descripcion: [''],
-      tecnologias: this.fb.group(this.createTecnologiaControls())
+      tecnologias: this.fb.group(this.createTecnologiaControls()),
+      urlGit: ['']
     });
     this.cargarTrabajoFormulario();
   }
@@ -75,7 +76,8 @@ export class FormularioTrabajosComponent implements OnInit {
       image: [''],
       referencia: [''],
       descripcion: [''],
-      tecnologias:[]
+      tecnologias:[],
+      urlGit:['']
     });
     this.previsualizacion = '';
   }
@@ -86,6 +88,7 @@ export class FormularioTrabajosComponent implements OnInit {
       formData.append('image', this.form.get('image')!.value);
       formData.append('referencia', this.form.get('referencia')!.value);
       formData.append('descripcion', this.form.get('descripcion')!.value);
+      formData.append('urlGit', this.form.get('urlGit')!.value);
 
       const tecnologiasControl = this.form.get('tecnologias');
       if (tecnologiasControl) {
@@ -95,6 +98,7 @@ export class FormularioTrabajosComponent implements OnInit {
           formData.append('tecnologias', new Blob([JSON.stringify(selectedTecnologias)], { type: 'application/json' }));
       }
 
+      //imprime en consola detalladamente un formData
       console.log(this.trabajo.idCardWock);
       formData.forEach((value, key) => {
         if (value instanceof Blob) {
@@ -188,6 +192,7 @@ export class FormularioTrabajosComponent implements OnInit {
             image: [''],
             referencia: this.trabajo.referencia,
             descripcion: this.trabajo.descripcion,
+            urlGit: this.trabajo.urlGit
           });
 
           const tecnologiasFormGroup = this.form.get('tecnologias') as FormGroup;

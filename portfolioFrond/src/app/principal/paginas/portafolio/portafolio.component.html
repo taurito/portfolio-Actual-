@@ -1,5 +1,5 @@
 <div class="globa-container">
-  <div style="text-align: center">
+  <div style="text-align: center" *ngIf="userLoginOn">
     <button class="btn btn-info btn-circle btn-xl" style="cursor: pointer"type="button" (click)="nuevoTrabajo()" data-bs-toggle="modal" data-bs-target="#exampleModal">
       <i class="bi bi-plus"></i>
     </button>
@@ -18,9 +18,14 @@
           <div class="tecnologias">
             <i *ngFor="let tecnologia of trabajo.tecnologias" [class]="getIconClass(tecnologia.nombre)" [ngClass]="getIconColorClass(tecnologia.nombre)"><h1>{{tecnologia.nombre}}</h1></i>
           </div>
+          <hr>
           <div class="botonesOpcion">
-            <button  type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="editarTrabajo(trabajo)">Editar</button>
+            <button *ngIf="userLoginOn" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="editarTrabajo(trabajo)">Editar</button>
             <button *ngIf="userLoginOn" type="button" class="btn btn-outline-danger" (click)="eliminar(trabajo.idCardWock)">Eliminar</button>
+            <a [href]="trabajo.urlGit" target="_blank">
+              <i class='bx bxl-github'></i>
+            </a>
+
             <button *ngIf="!userLoginOn" type="button" class="btn btn-outline-primary">Ver mas</button>
           </div>
       </div>

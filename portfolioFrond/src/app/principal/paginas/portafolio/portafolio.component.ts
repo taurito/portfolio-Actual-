@@ -13,6 +13,7 @@ import { TrabajoService } from 'src/app/servicios/trabajo.service';
 export class PortafolioComponent implements OnInit {
   trabajos: Trabajo[];
   userLoginOn: boolean = false;
+  git:string = "https://www.google.com";
 
   trabajoBacio: Trabajo = {
     idCardWock: 0,
@@ -20,7 +21,8 @@ export class PortafolioComponent implements OnInit {
     image: '',
     referencia: '',
     descripcion: '',
-    tecnologias:[]
+    tecnologias:[],
+    urlGit:''
   };
 
   constructor(
